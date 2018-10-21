@@ -14,14 +14,13 @@ The features are summarized blow:
   You can check three part:
   + 1.original image
   + 2.restore image from torch-tensor(transformed) back to numpy ndarray
-  + 3.zmask loaded by dataloader
+  + 3.zmask loaded by dataloader.
   e.g.
-  
-  original image
-  <div align=center><img width="700" height="700" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/original.png"/></div>
+  1. original.
+  <div align=left><img width="300" height="300" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/original.png"/></div>
 
-  restore image from tensor to numpy
-  <div align=center><img width="700" height="700" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/restore.png"/></div>
+  2. restore image from tensor to numpy.
+  <div align=left><img width="300" height="300" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/restore.png"/></div>
 
-  mask
-  <div align=center><img width="700" height="700" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/mask.png"/></div>
+  3. mask
+  <div align=left><img width="300" height="300" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/mask.png"/></div>

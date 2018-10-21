@@ -10,11 +10,11 @@ The features are summarized blow:
 
 ### We have finished:
 + Dataloader for [Pascal Voc 2012](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/).
-+ You can check your dataloader error in 'path/to/workspace/check/check_dataloader/img'
-  You can check three part:
-  + 1.original image
-  + 2.restore image from torch-tensor(transformed) back to numpy ndarray
-  + 3.zmask loaded by dataloader.
++ You can check your dataloader error in 'path/to/workspace/check/check_dataloader/img'.
+  You will see three part:
+  + 1.original image which we load directly from image path.
+  + 2.restore image from torch-tensor(transformed from numpy) back to numpy ndarray.
+  + 3.mask loaded by dataloader.
   e.g.
   1. original.
   <div align=left><img width="300" height="300" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/original.png"/></div>

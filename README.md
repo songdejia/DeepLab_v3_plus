@@ -4,12 +4,12 @@ This is a simple pytorch re-implementation of Google [Encoder-Decoder with Atrou
 ### Introduction:
 This work still need to be updated.
 The features are summarized blow:
-+ Use ResNet101 as base Network.
-+ Use only Pascal Voc 2012 for base dataset.
++ Use ResNet101 as base Network. Xception will be updated soon.
++ Use only VOC2012 for base dataset. Other dataset will be updated soon.
 
 
 ### We have finished:
-+ Dataloader for [Pascal Voc 2012](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/).
++ Dataloader for [VOC2012](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/).
 + You can check your dataloader error in 'path/to/workspace/check/check_dataloader/img'.
   You will see three part:
   + 1.original image which we load directly from image path.

@@ -2,7 +2,7 @@
 # @Author: Song Dejia
 # @Date:   2018-10-21 12:26:39
 # @Last Modified by:   Song Dejia
-# @Last Modified time: 2018-10-21 12:46:02
+# @Last Modified time: 2018-10-21 22:41:49
 
 
 import torch
@@ -136,7 +136,6 @@ class ToTensor(object):
 
         img = torch.from_numpy(img).float()
         mask = torch.from_numpy(mask).float()
-
 
         return {'image': img,
                 'label': mask}

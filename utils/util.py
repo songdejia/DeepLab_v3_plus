@@ -2,7 +2,7 @@
 # @Author: Song Dejia
 # @Date:   2018-10-21 14:15:52
 # @Last Modified by:   Song Dejia
-# @Last Modified time: 2018-10-21 15:38:56
+# @Last Modified time: 2018-10-21 21:17:14
 import os
 import numpy as np
 import torch
@@ -11,7 +11,46 @@ import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
+import argparse
 from torch.nn import init
+def parse_parameters():
+    parser = argparse.ArgumentParser(description='PyTorch DeepLabv3_plus training')
+
+    # parameters for dataset and network
+    parser.add_argument('--dataroot', metavar='DIR',
+                        help='path to dataset')
+    parser.add_argument('--j', default=4, type=int, metavar='N',
+                        help='number of data loading workers')
+    parser.add_argument('--gpu', default=2, type=int,
+                        help='gpu num')
+    parser.add_argument('--max_epoches', default=100000, type=int, metavar='N',
+                        help='number of total epochs to run')
+    parser.add_argument('--train_batchsize_per_gpu', default=14, type=int,
+                        metavar='N', help='mini-batch size (default: 64)')
+    parser.add_argument('--test_batchsize', default=1, type=int,
+                        metavar='N', help='mini-batch size (default: 32)')
+
+    # parameters for optimizer  
+    parser.add_argument('--init_type',  default='xavier', type=str,
+                        metavar='INIT',help='init net')
+    parser.add_argument('--init_lr', default=0.001, type=float,
+                        metavar='LR', help='initial learning rate')
+    parser.add_argument('--momentum', default=0.9, type=float,
+                        metavar='momentum', help='momentum')
+    parser.add_argument('--weight_decay', '--wd', default=1e-5, type=float,
+                        metavar='W', help='weight decay (default: 1e-4)')
+    parser.add_argument('--resume', default='', type=str, metavar='PATH',
+                        help='path to latest checkpoint (default: none)')
+    parser.add_argument('--log_train_dir', default='log_train', type=str,
+                        help='log for train')
+    parser.add_argument('--log_test_dir', default='log_test', type=str,
+                        help='log for test')
+    args = parser.parse_args()
+
+    return args
+
+
+
 def init_net(net, init_type='normal'):
     init_weights(net, init_type)
     return net

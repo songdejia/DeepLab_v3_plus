@@ -2,16 +2,17 @@
 # @Author: Song Dejia
 # @Date:   2018-10-21 20:46:42
 # @Last Modified by:   Song Dejia
-# @Last Modified time: 2018-10-22 11:12:07
+# @Last Modified time: 2018-10-22 15:20:35
 import torch
+from utils.util import *
 
-def evaluation(val_dataloader, net, epoch):
+def evaluation(val_dataloader, net, epoch, use_gpu = True):
     total_iou = .0
     net.eval()
     for ii, sample_batched in enumerate(val_dataloader):
         inputs, labels = sample_batched['image'], sample_batched['label']
-        inputs = inputs.cuda() if config.gpu else inputs
-        labels = labels.cuda() if config.gpu else labels
+        inputs = inputs.cuda() if use_gpu else inputs
+        labels = labels.cuda() if use_gpu else labels
 
         outputs = net(inputs)
 

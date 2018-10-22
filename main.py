@@ -2,7 +2,7 @@
 # @Author: Song Dejia
 # @Date:   2018-10-21 20:47:07
 # @Last Modified by:   Song Dejia
-# @Last Modified time: 2018-10-22 11:12:10
+# @Last Modified time: 2018-10-22 15:21:08
 import torch
 import torch.backends.cudnn as cudnn
 import argparse
@@ -58,10 +58,10 @@ def main():
         train_deeplab_v3_plus(train_dataloader, net, criterion, optimizer, epoch, global_step, running_loss_tr)
 
 
-        if epoch % 5 == 0:
-            eval(val_dataloader, net, epoch)
+        if epoch % 5 == 0 :
+            evaluation(val_dataloader, net, epoch)
 
-        if epoch % 10 == 0:
+        if epoch % 10 == 0 :
             save_checkpoint({
                 'epoch': epoch,
                 'state_dict': net.state_dict(),

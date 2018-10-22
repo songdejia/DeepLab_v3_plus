@@ -2,7 +2,7 @@
 # @Author: Song Dejia
 # @Date:   2018-10-21 14:15:52
 # @Last Modified by:   Song Dejia
-# @Last Modified time: 2018-10-22 11:05:45
+# @Last Modified time: 2018-10-22 15:30:53
 import os
 import numpy as np
 import torch
@@ -103,12 +103,12 @@ def save_checkpoint(state, weights_dir = '' ):
     Keyword Arguments:
         filename {str} -- [description] (default: {'checkpoint.pth.tar'})
     """
-    if not os.path.exists(weight_dir):
-        os.makedirs(weight_dir)
+    if not os.path.exists(weights_dir):
+        os.makedirs(weights_dir)
     
     epoch = state['epoch']
 
-    file_path = os.path.join(weight_dir, 'model-{:04d}.pth.tar.'.format(int(epoch)))  
+    file_path = os.path.join(weights_dir, 'model-{:04d}.pth.tar.'.format(int(epoch)))  
     torch.save(state, file_path)
     
 

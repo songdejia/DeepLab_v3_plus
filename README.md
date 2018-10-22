@@ -17,10 +17,10 @@ The features are summarized blow:
   + 3.mask loaded by dataloader.
   e.g.
   1. original.
-  <div align=left><img width="300" height="300" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/original.png"/></div>
+  <div align=left><img width="600" height="600" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/original.jpg"/></div>
 
   2. restore image from tensor to numpy.
-  <div align=left><img width="300" height="300" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/restore.png"/></div>
+  <div align=left><img width="600" height="600" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/restore.jpg"/></div>
 
   3. mask
-  <div align=left><img width="300" height="300" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/mask.png"/></div>
+  <div align=left><img width="600" height="600" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/mask.jpg"/></div>

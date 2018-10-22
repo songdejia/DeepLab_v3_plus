@@ -2,8 +2,10 @@
 # @Author: Song Dejia
 # @Date:   2018-10-21 20:46:42
 # @Last Modified by:   Song Dejia
-# @Last Modified time: 2018-10-21 20:46:56
-def eval(val_dataloader, net, epoch):
+# @Last Modified time: 2018-10-22 11:12:07
+import torch
+
+def evaluation(val_dataloader, net, epoch):
     total_iou = .0
     net.eval()
     for ii, sample_batched in enumerate(val_dataloader):

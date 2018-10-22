@@ -2,7 +2,7 @@
 # @Author: Song Dejia
 # @Date:   2018-10-21 14:15:52
 # @Last Modified by:   Song Dejia
-# @Last Modified time: 2018-10-22 10:01:38
+# @Last Modified time: 2018-10-22 11:05:45
 import os
 import numpy as np
 import torch
@@ -48,6 +48,8 @@ def parse_parameters():
                         help='log for train')
     parser.add_argument('--log_test_dir', default='log_test', type=str,
                         help='log for test')
+    parser.add_argument('--weights', default='', type=str,
+                        help='weights_backup')
     args = parser.parse_args()
 
     return args
@@ -85,7 +87,36 @@ def init_weights(net, init_type='normal', gain=0.02):
     #print('initialize network with %s' % init_type)
     net.apply(init_func)
 
+
+############################################
+# save
+############################################
+def save_checkpoint(state, weights_dir = '' ):
+    """[summary]
     
+    [description]
+    
+    Arguments:
+        state {[type]} -- [description] a dict describe some params
+        is_best {bool} -- [description] a bool value
+    
+    Keyword Arguments:
+        filename {str} -- [description] (default: {'checkpoint.pth.tar'})
+    """
+    if not os.path.exists(weight_dir):
+        os.makedirs(weight_dir)
+    
+    epoch = state['epoch']
+
+    file_path = os.path.join(weight_dir, 'model-{:04d}.pth.tar.'.format(int(epoch)))  
+    torch.save(state, file_path)
+    
+
+
+
+
+
+
 def adjust_learning_rate(init_lr, optimizer, epoch, gamma=0.1):
     """Sets the learning rate to the initial LR decayed 0.9 every 50 epochs"""
     lr = init_lr * (0.9 ** (epoch // 10))

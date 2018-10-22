@@ -2,7 +2,7 @@
 # @Author: Song Dejia
 # @Date:   2018-10-21 13:01:06
 # @Last Modified by:   Song Dejia
-# @Last Modified time: 2018-10-22 09:55:34
+# @Last Modified time: 2018-10-22 10:24:12
 import sys
 sys.path.append('../')
 import os
@@ -61,8 +61,11 @@ def prepare_for_train_dataloader(dataroot, bs_train = 4, shuffle = True, num_wor
 
     voc_train = VOCSegmentation(base_dir = dataroot, split = 'train', transform = transform)
 
-    dataloader = DataLoader(voc_train, batch_size = bs_train, shuffle = False, num_workers = num_workers, drop_last = True)
-
+    if check_dataloader:
+        dataloader = DataLoader(voc_train, batch_size = bs_train, shuffle = False, num_workers = num_workers, drop_last = True)
+    else:
+        dataloader = DataLoader(voc_train, batch_size = bs_train, shuffle = shuffle, num_workers = num_workers, drop_last = True)
+        
     if check_dataloader:
         """
         check dataloader img

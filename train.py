@@ -2,12 +2,13 @@
 # @Author: Song Dejia
 # @Date:   2018-10-21 12:18:56
 # @Last Modified by:   Song Dejia
-# @Last Modified time: 2018-10-21 21:15:19
+# @Last Modified time: 2018-10-22 11:12:49
+import sys
+sys.path.append('../')
 import torch
 import torch.nn as nn
 import config
 import torch.backends.cudnn as cudnn
-from utils.dataset import prepare_dor_val_dataloader, prepare_for_train_dataloader
 from model.deeplab import DeepLabv3_plus
 from utils.util import *
 

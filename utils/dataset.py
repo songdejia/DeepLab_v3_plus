@@ -2,7 +2,7 @@
 # @Author: Song Dejia
 # @Date:   2018-10-21 13:01:06
 # @Last Modified by:   Song Dejia
-# @Last Modified time: 2018-10-21 23:24:03
+# @Last Modified time: 2018-10-22 09:55:34
 import sys
 sys.path.append('../')
 import os
@@ -26,13 +26,13 @@ def transform_for_train(fixed_scale = 512, rotate_prob = 15):
     7.RandomRotate
     """
     transform_list = [] 
-    transform_list.append(FixedResize(size = (fixed_scale, fixed_scale)))
-    #transform_list.append(RandomSized(fixed_scale))
-    #transform_list.append(RandomRotate(rotate_prob))
-    #transform_list.append(RandomHorizontalFlip())
-    transform_list.append(Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)))
+    #transform_list.append(FixedResize(size = (fixed_scale, fixed_scale)))
+    transform_list.append(RandomSized(fixed_scale))
+    transform_list.append(RandomRotate(rotate_prob))
+    transform_list.append(RandomHorizontalFlip())
+    #transform_list.append(Normalize(mean=(0.5, 0.5, 0.5), std=(0.5, 0.5, 0.5)))
     
-    #transform_list.append(Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)))
+    transform_list.append(Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)))
     transform_list.append(ToTensor())
 
     return transforms.Compose(transform_list)
@@ -74,21 +74,18 @@ def prepare_for_train_dataloader(dataroot, bs_train = 4, shuffle = True, num_wor
         交通工具（飞机、自行车、船、公共汽车、小轿车、摩托车、火车）；
         室内（瓶子、椅子、餐桌、盆栽植物、沙发、电视）
         """
-        transform = transform_for_demo()
+        transform = transform_for_demo(fixed_scale = 512, rotate_prob = 15)
         voc_train_o = VOCSegmentation(base_dir = dataroot, split = 'train', transform = transform)
-        dataloader_o = DataLoader(voc_train, batch_size = bs_train, shuffle = False, num_workers = num_workers, drop_last = True)
+        dataloader_o = DataLoader(voc_train_o, batch_size = bs_train, shuffle = False, num_workers = num_workers, drop_last = True)
         workspace = os.path.abspath('./')
         img_dir = os.path.join(workspace, 'check/check_dataloader/img')
         mask_dir= os.path.join(workspace, 'check/check_dataloader/mask')
-        #std = np.array((0.229, 0.224, 0.225))
-        #mean= np.array((0.485, 0.456, 0.406))
-        std = np.array((0.5, 0.5, 0.5))
-        mean= np.array((0.5, 0.5, 0.5))
+        std = np.array((0.229, 0.224, 0.225))
+        mean= np.array((0.485, 0.456, 0.406))
 
         #print(img_dir)
         if os.path.exists(img_dir):
             shutil.rmtree(img_dir)
-
         os.makedirs(img_dir)
 
         idx = 0
@@ -121,7 +118,7 @@ def prepare_for_train_dataloader(dataroot, bs_train = 4, shuffle = True, num_wor
                 mask_path= os.path.join(img_dir, mask_name)
                 cv2.imwrite(mask_path, 10*mask_rgb[:,:,::-1])
 
-                print('idx : {:04d}'.format(idx))
+                print('restore and mask idx : {:04d}'.format(idx))
 
         idx = 0
         for index, sample_batched in enumerate(dataloader_o):
@@ -148,16 +145,7 @@ def prepare_for_train_dataloader(dataroot, bs_train = 4, shuffle = True, num_wor
                 img_name = '{}_original.jpg'.format(idx)
                 img_path = os.path.join(img_dir, img_name)
                 cv2.imwrite(img_path, img[:,:,::-1])
-                print('idx : {:04d}'.format(idx))
-
-
-        print(len(dataloader))
-
-
-
-
-
-
+                print('original idx : {:04d}'.format(idx))
 
     return dataloader
 
@@ -229,7 +217,6 @@ class VOCSegmentation(Dataset):
 
     def __len__(self):
         return len(self.images)
-
 
     def __getitem__(self, index):
         _img, _target= self._make_img_gt_point_pair(index)

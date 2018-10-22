@@ -2,7 +2,7 @@
 # @Author: Song Dejia
 # @Date:   2018-10-21 14:15:52
 # @Last Modified by:   Song Dejia
-# @Last Modified time: 2018-10-21 21:17:14
+# @Last Modified time: 2018-10-22 10:01:38
 import os
 import numpy as np
 import torch
@@ -13,6 +13,9 @@ import torch.nn.functional as F
 import matplotlib.pyplot as plt
 import argparse
 from torch.nn import init
+############################################
+# parse parameters for the model
+############################################
 def parse_parameters():
     parser = argparse.ArgumentParser(description='PyTorch DeepLabv3_plus training')
 
@@ -50,10 +53,13 @@ def parse_parameters():
     return args
 
 
-
+############################################
+# init weight
+############################################
 def init_net(net, init_type='normal'):
     init_weights(net, init_type)
     return net
+
 
 def init_weights(net, init_type='normal', gain=0.02):
     def init_func(m):

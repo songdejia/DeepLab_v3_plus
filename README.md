@@ -25,6 +25,6 @@ The features are summarized blow:
   3. mask
   <div align=left><img width="400" height="400" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/mask.jpg"/></div>
   
-  +4.network archetecture
+  + 4.network archetecture.
   <div align=left><img width="600" height="600" src="https://github.com/songdejia/DeepLab_v3_plus_pytorch/blob/master/screenshot/network.jpg"/></div>
   

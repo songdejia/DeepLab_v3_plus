@@ -9,7 +9,7 @@ The features are summarized blow:
 
 
 ### We have finished:
-+ Dataloader for [VOC2012](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/).
++ Version avaliable for [VOC2012](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/).
 + You can check your dataloader error in 'path/to/workspace/check/check_dataloader/img'.
   You will see three part:
   + 1.original image which we load directly from image path.

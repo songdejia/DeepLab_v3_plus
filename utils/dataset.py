@@ -2,7 +2,7 @@
 # @Author: Song Dejia
 # @Date:   2018-10-21 13:01:06
 # @Last Modified by:   Song Dejia
-# @Last Modified time: 2018-10-22 10:24:12
+# @Last Modified time: 2018-10-23 16:58:30
 import sys
 sys.path.append('../')
 import os
@@ -10,6 +10,7 @@ import shutil
 import cv2
 from PIL import Image
 from utils.transform import *
+from utils.util import *
 from torchvision import transforms
 from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
@@ -103,8 +104,14 @@ def prepare_for_train_dataloader(dataroot, bs_train = 4, shuffle = True, num_wor
                 mask= labels[i].numpy().astype(np.float32)
 
                 img = img.transpose((1, 2, 0))
-                mask= mask.transpose((1,2, 0))
-                mask_rgb = cv2.cvtColor(mask, cv2.COLOR_GRAY2RGB)
+                """
+                这里需要吧mask解码成rgb形式，每种class对应于一种颜色
+                """
+                #mask= mask.transpose((1,2, 0))
+                #mask_rgb = cv2.cvtColor(mask, cv2.COLOR_GRAY2RGB)
+                mask = mask.squeeze(0)
+                mask_rgb = decode_segmap(mask, dataset='pascal', plot = False)
+
 
                 #print(img.shape)
                 img *= std

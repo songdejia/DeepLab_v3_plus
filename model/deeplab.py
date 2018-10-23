@@ -2,7 +2,7 @@
 # @Author: Song Dejia
 # @Date:   2018-10-21 12:58:05
 # @Last Modified by:   Song Dejia
-# @Last Modified time: 2018-10-21 15:02:04
+# @Last Modified time: 2018-10-23 14:47:57
 import math
 import torch
 import torch.nn as nn
@@ -10,14 +10,30 @@ import torch.nn.functional as F
 import torch.utils.model_zoo as model_zoo
 
 class Bottleneck(nn.Module):
+    """
+    通过 _make_layer 来构造Bottleneck
+    具体通道变化：
+    inplanes -> planes -> expansion * planes 直连 out1
+    inplanes -> expansion * planes 残差项 res
+    由于多层bottleneck级连 所以inplanes = expansion * planes 
+    总体结构 expansion * planes -> planes -> expansion * planes 
+
+    注意：
+    1.输出 ReLu(out1 + res)
+    2.与普通bottleneck不同点在于 其中的stride是可以设置的
+    3.input output shape是否相同取决于stride   
+      out:[x+2rate-3]/stride + 1 
+      res:[x-1]/stride + 1
+
+
+    """
     expansion = 4
 
     def __init__(self, inplanes, planes, stride=1, rate=1, downsample=None):
         super(Bottleneck, self).__init__()
         self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=1, bias=False)
         self.bn1 = nn.BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride,
-                               dilation=rate, padding=rate, bias=False)
+        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride, dilation=rate, padding=rate, bias=False)
         self.bn2 = nn.BatchNorm2d(planes)
         self.conv3 = nn.Conv2d(planes, planes * 4, kernel_size=1, bias=False)
         self.bn3 = nn.BatchNorm2d(planes * 4)
@@ -49,7 +65,6 @@ class Bottleneck(nn.Module):
         return out
 
 class ResNet(nn.Module):
-
     def __init__(self, nInputChannels, block, layers, os=16, pretrained=False):
         self.inplanes = 64
         super(ResNet, self).__init__()
@@ -65,15 +80,14 @@ class ResNet(nn.Module):
             raise NotImplementedError
 
         # Modules
-        self.conv1 = nn.Conv2d(nInputChannels, 64, kernel_size=7, stride=2, padding=3,
-                                bias=False)
+        self.conv1 = nn.Conv2d(nInputChannels, 64, kernel_size=7, stride=2, padding=3, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
 
-        self.layer1 = self._make_layer(block, 64, layers[0], stride=strides[0], rate=rates[0])
-        self.layer2 = self._make_layer(block, 128, layers[1], stride=strides[1], rate=rates[1])
-        self.layer3 = self._make_layer(block, 256, layers[2], stride=strides[2], rate=rates[2])
+        self.layer1 = self._make_layer(block, 64, layers[0], stride=strides[0], rate=rates[0])#64， 3
+        self.layer2 = self._make_layer(block, 128, layers[1], stride=strides[1], rate=rates[1])#128 4
+        self.layer3 = self._make_layer(block, 256, layers[2], stride=strides[2], rate=rates[2])#256 23
         self.layer4 = self._make_MG_unit(block, 512, blocks=blocks, stride=strides[3], rate=rates[3])
 
         self._init_weight()
@@ -82,11 +96,15 @@ class ResNet(nn.Module):
             self._load_pretrained_model()
 
     def _make_layer(self, block, planes, blocks, stride=1, rate=1):
+        """
+        block class: 未初始化的bottleneck class
+        planes:输出层数
+        blocks:block个数
+        """
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
-                nn.Conv2d(self.inplanes, planes * block.expansion,
-                          kernel_size=1, stride=stride, bias=False),
+                nn.Conv2d(self.inplanes, planes * block.expansion, kernel_size=1, stride=stride, bias=False),
                 nn.BatchNorm2d(planes * block.expansion),
             )
 
@@ -102,8 +120,7 @@ class ResNet(nn.Module):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
-                nn.Conv2d(self.inplanes, planes * block.expansion,
-                          kernel_size=1, stride=stride, bias=False),
+                nn.Conv2d(self.inplanes, planes * block.expansion, kernel_size=1, stride=stride, bias=False),
                 nn.BatchNorm2d(planes * block.expansion),
             )
 
@@ -162,8 +179,7 @@ class ASPP_module(nn.Module):
         else:
             kernel_size = 3
             padding = rate
-        self.atrous_convolution = nn.Conv2d(inplanes, planes, kernel_size=kernel_size,
-                                            stride=1, padding=padding, dilation=rate, bias=False)
+        self.atrous_convolution = nn.Conv2d(inplanes, planes, kernel_size=kernel_size, stride=1, padding=padding, dilation=rate, bias=False)
         self.bn = nn.BatchNorm2d(planes)
         self.relu = nn.ReLU()
 
@@ -190,9 +206,12 @@ class DeepLabv3_plus(nn.Module):
     def __init__(self, nInputChannels=3, n_classes=21, os=16, pretrained=False, _print=True):
         if _print:
             print("Constructing DeepLabv3+ model...")
-            print("Number of classes: {}".format(n_classes))
-            print("Output stride: {}".format(os))
+            print("Number of classes       : {}".format(n_classes))
+            print("Output stride           : {}".format(os))
             print("Number of Input Channels: {}".format(nInputChannels))
+            print("Input shape             : {}".format("batchsize, 3, 512, 512"))
+            print("Output shape            : {}".format("batchsize,21, 512, 512"))
+
         super(DeepLabv3_plus, self).__init__()
 
         # Atrous Conv
@@ -233,35 +252,30 @@ class DeepLabv3_plus(nn.Module):
                                        nn.ReLU(),
                                        nn.Conv2d(256, n_classes, kernel_size=1, stride=1))
 
-    def forward(self, input):
-        x, low_level_features = self.resnet_features(input)
-        x1 = self.aspp1(x)
-        x2 = self.aspp2(x)
-        x3 = self.aspp3(x)
-        x4 = self.aspp4(x)
-        x5 = self.global_avg_pool(x)
-        x5 = F.upsample(x5, size=x4.size()[2:], mode='bilinear', align_corners=True)
-        #x5 = F.interpolate(x5, size=x4.size()[2:], mode='bilinear', align_corners=True)
+    def forward(self, input):#input 1, 3, 512, 512
+        x, low_level_features = self.resnet_features(input)#final_x:[1, 2048, 32, 32]  low_level_features:[1,256, 128, 128]
+        x1 = self.aspp1(x)   #[1, 256, 32, 32]
+        x2 = self.aspp2(x)   #[1, 256, 32, 32]
+        x3 = self.aspp3(x)   #[1, 256, 32, 32]
+        x4 = self.aspp4(x)   #[1, 256, 32, 32]
+        x5 = self.global_avg_pool(x) #[1, 256, 1, 1]
+        x5 = F.interpolate(x5, size=x4.size()[2:], mode='bilinear', align_corners=True)
 
         x = torch.cat((x1, x2, x3, x4, x5), dim=1)
 
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
-        x = F.upsample(x, size=(int(math.ceil(input.size()[-2]/4)),
-                                int(math.ceil(input.size()[-1]/4))), mode='bilinear', align_corners=True)
-        #x = F.interpolate(x, size=(int(math.ceil(input.size()[-2]/4)),
-        #                        int(math.ceil(input.size()[-1]/4))), mode='bilinear', align_corners=True)
+        x = F.interpolate(x, size=(int(math.ceil(input.size()[-2]/4)), int(math.ceil(input.size()[-1]/4))), mode='bilinear', align_corners=True)
 
         low_level_features = self.conv2(low_level_features)
         low_level_features = self.bn2(low_level_features)
         low_level_features = self.relu(low_level_features)
 
-
         x = torch.cat((x, low_level_features), dim=1)
         x = self.last_conv(x)
-        x = F.upsample(x, size=input.size()[2:], mode='bilinear', align_corners=True)
-        #x = F.interpolate(x, size=input.size()[2:], mode='bilinear', align_corners=True)
+
+        x = F.interpolate(x, size=input.size()[2:], mode='bilinear', align_corners=True)
 
         return x
 

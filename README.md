@@ -16,11 +16,7 @@ The features are summarized blow:
   + 2.restore image from torch-tensor(transformed from numpy) back to numpy ndarray.
   + 3.mask loaded by dataloader.
   e.g.
-  1. original.
-  <div align=left><img width="600" height="600" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/original.jpg"/></div>
 
-  2. restore image from tensor to numpy.
-  <div align=left><img width="600" height="600" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/restore.jpg"/></div>
-
-  3. mask
-  <div align=left><img width="600" height="600" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/mask.jpg"/></div>
++ Network architecture.
+  <div align=left><img width="800" height="450" src="https://github.com/songdejia/DeepLab_v3_plus_pytorch/blob/master/screenshot/network.jpg"/></div>
+  

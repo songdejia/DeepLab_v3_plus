@@ -26,5 +26,5 @@ The features are summarized blow:
   <div align=left><img width="400" height="400" src="https://github.com/songdejia/deeplab_v3_plus/blob/master/screenshot/mask.jpg"/></div>
   
 + Network architecture.
-  <div align=left><img width="600" height="600" src="https://github.com/songdejia/DeepLab_v3_plus_pytorch/blob/master/screenshot/network.jpg"/></div>
+  <div align=left><img width="800" height="600" src="https://github.com/songdejia/DeepLab_v3_plus_pytorch/blob/master/screenshot/network.jpg"/></div>
   

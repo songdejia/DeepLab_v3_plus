@@ -23,3 +23,27 @@ The features are summarized blow:
 + Network architecture.
   <div align=left><img width="800" height="450" src="https://github.com/songdejia/DeepLab_v3_plus_pytorch/blob/master/screenshot/network.jpg"/></div>
   
++ Evaluation mIOU on PASCAL VOC2012 valset every epoches 
++ Pretrained model on PASCAL VOC2012 trainset[BaiduYun Link](https://pan.baidu.com/s/1g75wjmnUkIDCml2S1IeDgA)
+  which is trained on 2 Tesla P100 for 100 epoches with config shown in code. 
+
+### Usage:
++ Download dataset and unzip
+```
+ln -s VOCdevkit path/to/deeplab_v3_plus/dataset
+```
++ Pretrained model is avaliable [BaiduYun Link](https://pan.baidu.com/s/1g75wjmnUkIDCml2S1IeDgA)
++ Finally, run the model.
++ Check you GPU resources and modify your run.sh. 
+```
+sh run.sh
+```
+
+### Future:
++ Xception as Network Baseline.
++ Pretrained model on COCO, JFT.
++ Depthwise separable convolution.
++ Support dataset for Cityscapes.
+
+
+  

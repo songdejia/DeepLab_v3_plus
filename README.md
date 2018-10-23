@@ -15,7 +15,10 @@ The features are summarized blow:
   + 1.original image which we load directly from image path.
   + 2.restore image from torch-tensor(transformed from numpy) back to numpy ndarray.
   + 3.mask loaded by dataloader.
-  e.g.
+  Following images show original image, augumentation image and mask target from left to right 
+  <div align=left><img width="900" height="300" src="https://github.com/songdejia/DeepLab_v3_plus_pytorch/blob/master/screenshot/combine1.jpg"/></div>
+  <div align=left><img width="900" height="300" src="https://github.com/songdejia/DeepLab_v3_plus_pytorch/blob/master/screenshot/combine2.jpg"/></div>
+  <div align=left><img width="900" height="300" src="https://github.com/songdejia/DeepLab_v3_plus_pytorch/blob/master/screenshot/combine3.jpg"/></div>
 
 + Network architecture.
   <div align=left><img width="800" height="450" src="https://github.com/songdejia/DeepLab_v3_plus_pytorch/blob/master/screenshot/network.jpg"/></div>
